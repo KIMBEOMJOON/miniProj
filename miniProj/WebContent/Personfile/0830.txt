@@ -1,0 +1,91 @@
+truncate table client_address
+
+select * from
+client_address
+
+rollback
+
+comment on table address
+is '고객 주소록을 관리하기 위한 테이블';
+
+select * from address
+
+comment on column address.name
+is '고객이름'
+
+select * from 
+user_col_comments
+where table_name = 'ADDRESS'
+
+문제 1 ] 회원 테이블 인스턴스를 참고하여 테이블을 생성하시오 .
+[회원 : member ] 테이블 인스턴스 
+create table member(
+userid varchar2(20),
+usernmae varchar2(20),
+passwd varchar2(20),
+idnum varchar2(20),
+phone varchar2(20),
+address varchar2(20),
+regdate date,
+interest varchar2(20))
+
+comment on column member.userid
+is '사용자아이디'
+comment on column member.USERNMAE
+is '회원이름'
+comment on column member.passwd
+is '비밀번호'
+comment on column member.idnum
+is '주민번호'
+comment on column member.phone
+is '전화번호'
+comment on column member.address
+is '주소'
+comment on column member.regdate
+is '가입일'
+comment on column member.interest
+is '취미'
+
+select * from member
+
+select * from 
+user_col_comments
+where table_name = 'MEMBER'
+
+문제2 ] 회원테이블에 회원정보를 입력하시오.
+insert into member
+values ('sunshinelee','이순신','ss1000','870101112020','02)333-2123','',sysdate,'컴퓨터')
+
+문제 3 회원테이블의 구조와 데이터가 같은 member_second를 만드시오,
+create table member_second
+as select * 
+from member
+where 1=2
+
+select * from member_second
+
+문제 4 ] 회원테이블의 userid,username,psswd칼럼만 복사하여 
+member_third 테이블을 만드시오.
+create table member_third
+AS SELECT userid,USERNMAE,passwd from member
+
+
+문제 5 ] 회원테이블의 구조는 동일하고 데이트를 가지지않는 
+member_forth테이블을 만드시오 .
+
+문제 6 ] 회원테이블에 email칼럼을 추가하시오.
+(단 email칼럼의 데이터 타입은 varchar2(50)
+alter table member
+add (email varchar2(50));
+문제 7 ] 회원테이블에 국적을 나타내는 contry칼럼을 추가하고
+기본값을 'korea'로 지정하시오,
+alter table member
+add(country varchar2(20) default 'KOREA');
+
+문제 8 ] 회원테이블에서 email칼럼을 삭제하시오.
+alter table member drop COLUMN email;
+문제 9 ] 회원테이블의 address칼럼의 데이터 크기를 30으로 증가하시오.
+alter table member
+modify address varchar2(30)
+문제 10 ] member_second 테이블 이름을 edit_member로 변경하시오,
+rename member_second TO edit_member

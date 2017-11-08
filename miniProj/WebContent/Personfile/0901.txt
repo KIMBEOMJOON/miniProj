@@ -1,0 +1,108 @@
+select deptno,dname
+from department
+where dname='정보미디어학부';
+
+
+select statement optimizer=CHOOSE
+table access(BY INDEX ROWID) of 'department'
+INDEX  (UNIQUE SCAN) of 'IDX_DEPT_NAME'(UNIQUE)
+
+select name,birthdate
+from student
+where birthdate= '04/02/1979';
+
+
+
+select studno,name
+from student
+where deptno = 101 and grade='4';
+
+drop index_idx_stud_dno_grade;
+
+select studno,name
+from student
+where deptno = 101 and grade='4';
+
+select index_name,uniqueness
+from user_indexes
+where table_name = 'student' ;
+
+drop INDEX index
+
+alter index stud_no_pk rebuild
+
+
+
+select * 
+from student
+
+13장 =======
+문제 1 ]인덱스의 개념과 필요성을 간략하게 서술하시오 
+인덱스란?
+- 테이블에 있는 레코드의 효율적인 검색을 위한 별도의 데이터베이스 오브젝트
+책의 목차 같은개념 어디에 무엇이있는지 쉽게 한번에 찾을수 있도록 도와주는것
+전체 데이터중 10%~15%이내의 분포이내의 데이터를 거색하는경우 효율 증가 (분포도가 높은경우엔 오히려 능률저하)
+
+
+문제 2 ] 인덱스의 종류를 간략하게 정리하시오
+비트맵인덱스 각 칼럼에 대해 적은 갯수의 독특한 값이 있을경우에 사용
+조밀 인덱스
+희소(유니크) 인덱스 PK와 UK제약조건시 생성되는 인덱스
+ 인덱스를 사용한 칼럼의 중복값ㄷㄹ을 포함하지 않고 사용할 수 있다 .
+비고유인덱스 NON-Unique인덱스 인덱스를 사용한 칼럼에 중복데이터값을 가질수 있다.
+결합 인덱스   복수개의 칼럼에 사용할 수 있다
+복수키의 인덱스가 가질 수 있는 최대 칼럼값은 16개 이다 . 
+Function-based 인덱스 
+        인덱스에 포함된 1개 이상의 컬럼이 함수 또는 수식을 사용하여 생성된 경우를 말하며 인덱스로 저장되기   
+
+
+
+
+문제 3 ] 12장에서 생성한 MEMBER/BOARD 테이블에 아래의 제시한 인덱스를 생성하시오 
+
+1)MEMber테이블의 regdate칼럼에 대헤 인덱스를 생성하시오
+
+CREATE INDEX idx_member_regdate ON MEMBER(regdate)
+2)board테이블의 userid칼럼에 대해 인덱스를 생성하시오
+CREATE INDEX idx_BOARD_userid ON BOARD(userid)
+3)member테이블의 interest칼럼에 대해 인덱스를 생성하시오
+create index idx_member_interest ON MEMBER(interest)
+4)member테이블의 userid칼럼에 대헤 upper()함수를 적용한 함수기반 인덱스를 생성하시오
+
+create index fidx_
+문제 4 ] 3번에 생성한 인덱스를 재구성하시오
+alter INDEX idx_member_regdate rebuild
+alter INDEX idx_BOARD_userid rebuild
+alter INDEX idx_member_interest rebuild
+
+문제 5 ] 3번에 생성한 인덱스에 대한 정보를 데이터 딕셔너리뷰를 통해 조회하시오 
+
+select  idx_member_interest,INDEX idx_member_regdate
+from USER_indexes
+where table_name = 'MEMBER'
+
+create view v_stud_dept101(학번,이름,전화번호)
+AS select studno,name,deptno
+from student
+where deptno = 101;
+
+select * from v_stud_dept101;
+
+create view v_stud_dept102(학번,이름,학년,학과이름)
+as select s.studno,s.name,s.grade,d.dname
+from student s , department d 
+where s.deptno = d.deptno AND s.deptno  = 102;
+
+select * from v_stud_dept102;
+
+create view v_prof_avg_sal
+AS SELECT deptno,SUM(sal)sum_sal,AVG(sal)avg_sal
+from professor
+GROUP BY deptno; 
+
+select * from v_prof_avg_sal
+
+
+
+
+
